@@ -15,10 +15,10 @@ public class ArmstrongNumber {
 	}
 
 	public static void main(String[] args) {
-		Scanner scanner = new Scanner(System.in);
+		Scanner s = new Scanner(System.in);
 		System.out.print("Input an integer: ");
-		String input = scanner.nextLine();
+		String input = s.nextLine();
 		int number = Integer.parseInt(input);
-		System.out.println("Is Armstrong number? " + is_Amstrong(number));
+		System.out.println("Armstrong number " + is_Amstrong(number));
 	}
 }
