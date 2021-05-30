@@ -18,8 +18,8 @@ class SquareRoot {
 		scanner.close();
 
 		if (checkPerfectSquare(num))
-			System.out.print(num + " is a perfect square number");
+			System.out.print(num + " perfect square ");
 		else
-			System.out.print(num + " is not a perfect square number");
+			System.out.print(num + " not a perfect square ");
 	}
 }
