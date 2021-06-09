@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import com.nisum.model.Person;
+
 public class Test {
 	public static void main(String[] args) {
 		Comparator<Person> comparator = null;
@@ -16,7 +18,6 @@ public class Test {
 		personlist.add(new Person(5, 11222111, "rajesh", "ponnala"));
 		personlist.add(new Person(6, 99866587, "saketh", "padigela"));
 		personlist.add(new Person(7, 12343234, "kumar", "oraging"));
-		// implementing bubble sorting
 
 		BubbleSort bubbleSort = new BubbleSort();
 		List<Person> listOfpersons = bubbleSort.bubbleSort(personlist, isDescendingOrder);
@@ -44,16 +45,48 @@ public class Test {
 		}
 	}
 
-	/*
-	 * QuickSort quicksorting = new QuickSort(); List<Person> quickSortlist =
-	 * quicksorting.QuickSort(personlist, isDescendingOrder);for( Person
-	 * p1:selectionSortlist) { System.out.println(p1.id + " " + p1.getFirstName() +
-	 * " " + p1.adharNumber); }
-	 * 
-	 * List<Person> selectionsortUsingComparator = quicksorting.senSort(personlist,
-	 * comparator, isDescendingOrder);System.out.
-	 * println(" using comparator to sorting the elements");for( Person
-	 * p:selectionsortUsingComparator) { System.out.println(p1.getFirstName() + " "
-	 * + p1.getLastName() + " " + p1.adharNumber + " " + p1.id); }
-	 */
-}
+	InsertionSort insertionsort = new InsertionSort();
+	List<Person> insertionsortlist = insertionsort.insertionSort(insertionsortlist, isDescendingOrder);for(
+	Person p1:insertionsortlist)
+	{
+		System.out.println(p1.id + " " + p1.firstName + " " + p1.adharNumber);
+	}
+	List<Person> insertionUsingComparator = insertionsort.insertionSort(insertionsortlist, comparator,
+			isDescendingOrder);System.out.println(" using comparator to sorting the elements");
+
+	for(
+	Person p:insertionUsingComparator)
+	{
+		System.out.println(p1.firstName + " " + p1.lastName + " " + p1.adharNumber + " " + p1.id);
+	}
+
+	QuickSort quickSort = new QuickSort();
+	List<Person> quickSort1 = quickSort.quickSort(quickSort, isDescendingOrder);for(
+	Person p1:quicksortlist)
+	{
+		System.out.println(p1.id + " " + p1.firstName + " " + p1.adharNumber);
+	}
+	List<Person> quickUsingComparator1 = quickSort.quickSort(quickSort, comparator,
+			isDescendingOrder);System.out.println(" using comparator to sorting the elements");
+
+	for(
+	Person p1:quickUsingComparator)
+	{
+		System.out.println(p1.firstName + " " + p1.lastName + " " + p1.adharNumber + " " + p1.id);
+	}
+
+	MergeSort MergeSort = new MergeSort();
+	List<Person> mergeSort = mergeSort.mergeSort(mergeSort, isDescendingOrder);for(
+	Person p1:mergesortlist)
+	{
+		System.out.println(p1.id + " " + p1.firstName + " " + p1.adharNumber);
+	}
+	List<Person> mergeUsingComparator1 = mergeSort.mergeSort(mergeSort, comparator,
+			isDescendingOrder);System.out.println(" using comparator to sorting the elements");
+
+	for(
+	Person p1:mergeUsingComparator)
+	{
+		System.out.println(p1.firstName + " " + p1.lastName + " " + p1.adharNumber + " " + p1.id);
+	}
+}}

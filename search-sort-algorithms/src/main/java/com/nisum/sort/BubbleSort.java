@@ -20,13 +20,10 @@ public class BubbleSort {
 			List<Person> per = BubbleSort.bubbleSortingPerson(distinctpersonData);
 			Collections.reverse(per);
 			return per;
-			// Collections.sort(distinctpersonData, Collections.reverseOrder());
 		} else {
 			System.out.println("before bubble sorting");
-			// Collections.sort(distinctpersonData);
 			return BubbleSort.bubbleSortingPerson(distinctpersonData);
 		}
-		// return distinctpersonData;
 	}
 
 	public List<Person> removeDuplicates(List<Person> persons) {
@@ -45,7 +42,6 @@ public class BubbleSort {
 
 		if (isDescendingOrder) {
 			Collections.sort(distinct, new Comparator<Person>() {
-
 				@Override
 				public int compare(Person o1, Person o2) {
 					return o1.firstName.compareTo(o1.firstName);
@@ -64,7 +60,7 @@ public class BubbleSort {
 	protected static List<Person> bubbleSortingPerson(List<Person> distinct) {
 		Person person;
 		boolean sorted = false;
-		System.out.println("bubble sorung bubbleSortArrayList ");
+		System.out.println(" bubbleSortArrayList ");
 		while (!sorted) {
 			sorted = true;
 			for (int i = 0; i < distinct.size() - 1; i++)

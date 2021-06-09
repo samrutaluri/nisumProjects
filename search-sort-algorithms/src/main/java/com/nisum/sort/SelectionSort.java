@@ -19,13 +19,10 @@ public class SelectionSort {
 			List<Person> per = SelectionSort.selectionSortPerson(distinctpersonData);
 			Collections.reverse(per);
 			return per;
-			// Collections.sort(distinctpersonData, Collections.reverseOrder());
 		} else {
 			System.out.println("before selection sorting");
-			// Collections.sort(distinctpersonData);
 			return SelectionSort.selectionSortPerson(distinctpersonData);
 		}
-		// return distinctpersonData;
 	}
 
 	public List<Person> removeDuplicates(List<Person> persons) {
@@ -64,7 +61,7 @@ public class SelectionSort {
 		Person person;
 		int minIndex;
 		boolean sorted = false;
-		System.out.println(" INSERTION ORDER selectionSortArrayList ");
+		System.out.println(" selectionSortArrayList ");
 		while (!sorted) {
 			sorted = true;
 			for (int i = 0; i < distinct.size() - 1; i++) {

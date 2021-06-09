@@ -1,4 +1,4 @@
-package com.nisum.sort;
+package com.nisum.model;
 
 public class Person implements Comparable<Person> {
 
@@ -73,8 +73,8 @@ public class Person implements Comparable<Person> {
 		return this.id - o.id;
 	}
 
-	public Object getCijfer() {
-		return null;
+	public void mergeSort(int[] array, int i, int j) {
+		
 	}
 
 }
