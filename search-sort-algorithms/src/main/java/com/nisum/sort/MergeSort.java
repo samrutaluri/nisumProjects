@@ -1,10 +1,9 @@
 package com.nisum.sort;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class MergeSort {
@@ -14,83 +13,139 @@ public class MergeSort {
 		return sort(distinct, isDescendingOrder);
 	}
 
-	public List<Person> sort(List<Person> distinctpersonData, boolean isDescendingOrder) {
-
-		if (!isDescendingOrder) {
-			System.out.println("reverse order");
-			List<Person> per = MergeSort.mergeSortingPerson(distinctpersonData);
-			Collections.reverse(per);
-			return per;
-		} else {
-			System.out.println("before merge sorting");
-			return MergeSort.mergeSortingPerson(distinctpersonData);
-		}
+	public List<Person> sort(List<Person> distinct, boolean isDescendingOrder) {
+		int from = distinct.indexOf(distinct.get(0));
+		int to = distinct.size() - 1;
+		merge(distinct, isDescendingOrder, from, to);
+		return distinct;
 	}
 
-	private static List<Person> mergeSortingPerson(List<Person> distinctpersonData) {
-		return null;
+	private void merge(List<Person> distinct, boolean isDescendingOrder, int from, int to) {
+		int mid = (from + to) / 2;
+		if (from < to) {
+
+			merge(distinct, isDescendingOrder, from, mid);
+			merge(distinct, isDescendingOrder, mid + 1, to);
+		}
+		mergeS(distinct, from, mid, to, isDescendingOrder);
+
+	}
+
+	private void mergeS(List<Person> distinct, int from, int mid, int to, boolean isDescendingOrder) {
+
+		int n = to - from + 1;
+		Object[] values = new Object[n];
+
+		int fromValue = from;
+
+		int middleValue = mid + 1;
+
+		int index = 0;
+
+		while (fromValue <= mid && middleValue <= to) {
+			Predicate<Integer> sortPred = (i) -> i < 0;
+
+			if (isDescendingOrder) {
+				sortPred = (i) -> i > 0;
+			}
+			if (sortPred.test((distinct.get(fromValue)).compareTo(distinct.get(middleValue)))) {
+				values[index] = distinct.get(fromValue);
+				fromValue++;
+			} else {
+				values[index] = distinct.get(middleValue);
+				middleValue++;
+			}
+			index++;
+		}
+
+		while (fromValue <= mid) {
+			values[index] = distinct.get(fromValue);
+			fromValue++;
+			index++;
+		}
+		while (middleValue <= to) {
+			values[index] = distinct.get(middleValue);
+			middleValue++;
+			index++;
+		}
+
+		for (index = 0; index < n; index++)
+			distinct.set((from + index), (Person) values[index]);
 	}
 
 	public List<Person> removeDuplicates(List<Person> persons) {
 
-		Set<Person> uniqPersonData = persons.stream().distinct().collect(Collectors.toSet());
+		Set<Person> uniqPersonData = persons.stream().collect(Collectors.toSet());
 		return uniqPersonData.stream().collect(Collectors.toList());
 
 	}
 
-	public List<Person> bubbleSort(List<Person> persons, Comparator<Person> comparator, boolean isDescendingOrder) {
+	public List<Person> mergeSort(List<Person> persons, Comparator<Person> comparator, boolean isDescendingOrder) {
 		List<Person> distinct = removeDuplicates(persons);
 		return sort(distinct, comparator, isDescendingOrder);
-
 	}
 
 	public List<Person> sort(List<Person> distinct, Comparator<Person> comparator, boolean isDescendingOrder) {
+		int from = distinct.indexOf(distinct.get(0));
+		int to = distinct.size() - 1;
+		merge(distinct, comparator, isDescendingOrder, from, to);
 
-		if (isDescendingOrder) {
-			Collections.sort(distinct, new Comparator<Person>() {
-				@Override
-				public int compare(Person o1, Person o2) {
-					return o1.firstName.compareTo(o1.firstName);
-
-				}
-
-			});
-
-		} else {
-
-			distinct.sort((o1, o2) -> o2.firstName.compareTo(o1.firstName));
-		}
 		return distinct;
+
 	}
 
-	private static void MergeSort(ArrayList<Person> list, ArrayList<Person> helper, int low, int middle, int high,
-			Comparator<Person> compTr) {
-		for (int i = low; i < high + 1; i++) {
-			helper.add(i, list.get(i));
+	private void merge(List<Person> distinct, Comparator<Person> comparator, boolean isDescendingOrder, int from,
+			int to) {
+
+		int mid = (from + to) / 2;
+		if (from < to) {
+			merge(distinct, comparator, isDescendingOrder, from, mid);
+			merge(distinct, comparator, isDescendingOrder, mid + 1, to);
 		}
+		mergeS(distinct, from, mid, comparator, to, isDescendingOrder);
 
-		int helperLeft = low;
-		int helperRight = middle + 1;
-		int current = low;
+	}
 
-		while (helperLeft < middle && helperRight < high) {
-			if (isGreaterThan(helper.get(helperLeft), helper.get(helperRight), compTr)) {
-				list.set(current, helper.get(helperLeft));
-				helperLeft++;
-			} else {
-				list.set(current, helper.get(helperRight));
-				helperRight++;
+	private void mergeS(List<Person> distinct, int from, int mid, Comparator<Person> comparator, int to,
+			boolean isDescendingOrder) {
+		int n = to - from + 1;
+		Object[] values = new Object[n];
+
+		int fromValue = from;
+
+		int middleValue = mid + 1;
+
+		int index = 0;
+
+		while (fromValue <= mid && middleValue <= to) {
+			Predicate<Integer> sortPred = (i) -> i < 0;
+
+			if (isDescendingOrder) {
+				sortPred = (i) -> i > 0;
 			}
-			current++;
+			if (sortPred.test(comparator.compare(distinct.get(fromValue), distinct.get(middleValue)))) {
+				values[index] = distinct.get(fromValue);
+				fromValue++;
+			} else {
+				values[index] = distinct.get(middleValue);
+				middleValue++;
+			}
+			index++;
 		}
 
-		int remaining = middle - helperLeft;
-		for (int j = 0; j <= remaining; j++) {
-			list.set(current + j, helper.get(helperLeft + j));
+		while (fromValue <= mid) {
+			values[index] = distinct.get(fromValue);
+			fromValue++;
+			index++;
 		}
-	}
+		while (middleValue <= to) {
+			values[index] = distinct.get(middleValue);
+			middleValue++;
+			index++;
+		}
 
-	private static boolean isGreaterThan(Person person, Person person2, Comparator<Person> compTr) {
-		return false;
+		for (index = 0; index < n; index++)
+			distinct.set((from + index), (Person) values[index]);
+
 	}
 }
