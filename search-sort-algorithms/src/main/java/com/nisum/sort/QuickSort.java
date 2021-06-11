@@ -1,33 +1,24 @@
 package com.nisum.sort;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class QuickSort {
 
 	public List<Person> quickSort(List<Person> persons, boolean isDescendingOrder) {
 		List<Person> distinct = removeDuplicates(persons);
-		return quicksort(distinct, isDescendingOrder);
+		return sort(distinct, isDescendingOrder);
 	}
 
-	public List<Person> quicksort(List<Person> distinctpersonData, boolean isDescendingOrder) {
+	public List<Person> sort(List<Person> distinct, boolean isDescendingOrder) {
+		int low = distinct.indexOf(distinct.get(0));
+		int high = distinct.size() - 1;
+		QuickSort.quicksort(distinct, low, high, isDescendingOrder);
+		return distinct;
 
-		if (!isDescendingOrder) {
-			System.out.println("reverse order");
-			List<Person> per = QuickSort.quickSortingPerson(distinctpersonData);
-			Collections.reverse(per);
-			return per;
-		} else {
-			System.out.println("before quick sorting");
-			return QuickSort.quickSortingPerson(distinctpersonData);
-		}
-	}
-
-	private static List<Person> quickSortingPerson(List<Person> distinctpersonData) {
-		return null;
 	}
 
 	public List<Person> removeDuplicates(List<Person> persons) {
@@ -44,53 +35,80 @@ public class QuickSort {
 
 	public List<Person> sort(List<Person> distinct, Comparator<Person> comparator, boolean isDescendingOrder) {
 
-		if (isDescendingOrder) {
-			Collections.sort(distinct, new Comparator<Person>() {
-				@Override
-				public int compare(Person o1, Person o2) {
-					return o1.firstName.compareTo(o1.firstName);
-
-				}
-
-			});
-
-		} else {
-
-			distinct.sort((o1, o2) -> o2.firstName.compareTo(o1.firstName));
-		}
+		int low = distinct.indexOf(distinct.get(0));
+		int high = distinct.size() - 1;
+		QuickSort.quicksortComp(distinct, low, comparator, high, isDescendingOrder);
 		return distinct;
 	}
 
-	public static void quickSort(Person[] arr, int low, int high) {
-		if (arr == null || arr.length == 0) {
-			return;
+	private static void quicksortComp(List<Person> distinct, int low, Comparator<Person> comparator, int high,
+			boolean isDescendingOrder) {
+		if (low < high) {
+			int pi = partition(distinct, comparator, low, high, isDescendingOrder);
+			quicksortComp(distinct, low, comparator, pi - 1, isDescendingOrder);
+			quicksortComp(distinct, pi + 1, comparator, high, isDescendingOrder);
 		}
-		if (low >= high) {
-			return;
+	}
+
+	private static int partition(List<Person> distinct, Comparator<Person> comparator, int low, int high,
+			boolean isDescendingOrder) {
+		Predicate<Integer> sortPred = (i) -> i > 0;
+
+		if (isDescendingOrder) {
+			sortPred = (i) -> i < 0;
 		}
-		int middle = low + (high - low) / 2;
-		Person pivot = arr[middle];
-		int i = low, j = high;
-		while (i <= j) {
-			while (arr[i].getCijfer() < pivot.getCijfer()) {
+		int pivot = distinct.indexOf(distinct.get(high));
+		int i = (low - 1);
+
+		for (int j = low; j <= high - 1; j++) {
+			if (sortPred.test(comparator.compare(distinct.get(j), distinct.get(pivot)))) {
 				i++;
+				swap(distinct, i, j);
 			}
-			while (arr[j].getCijfer() > pivot.getCijfer()) {
-				j--;
-			}
-			if (i <= j) {
-				Person temp = arr[i];
-				arr[i] = arr[j];
-				arr[j] = temp;
+		}
+		swapCom(distinct, i + 1, high);
+		return (i + 1);
+	}
+
+	private static void swapCom(List<Person> distinct, int i, int j) {
+		Person temp = distinct.get(i);
+		distinct.set(i, distinct.get(j));
+		distinct.set(j, temp);
+
+	}
+
+	static void swap(List<Person> distinct, int i, int j) {
+		Person temp = distinct.get(i);
+		distinct.set(i, distinct.get(j));
+		distinct.set(j, temp);
+	}
+
+	static int partition(List<Person> distinct, int low, int high, boolean isDescendingOrder) {
+		Predicate<Integer> sortPred = (i) -> i < 0;
+
+		if (isDescendingOrder) {
+			sortPred = (i) -> i > 0;
+		}
+		int pivot = distinct.indexOf(distinct.get(high));
+		int i = (low - 1);
+
+		for (int j = low; j <= high - 1; j++) {
+			if (sortPred.test((distinct.get(j)).compareTo(distinct.get(pivot))))
+				;
+			{
 				i++;
-				j--;
+				swap(distinct, i, j);
 			}
 		}
-		if (low < j) {
-			quickSort(arr, low, j);
-		}
-		if (high > i) {
-			quickSort(arr, i, high);
+		swap(distinct, i + 1, high);
+		return (i + 1);
+	}
+
+	static void quicksort(List<Person> distinct, int low, int high, boolean isDescendingOrder) {
+		if (low < high) {
+			int pi = partition(distinct, low, high, isDescendingOrder);
+			quicksort(distinct, low, pi - 1, isDescendingOrder);
+			quicksort(distinct, pi + 1, high, isDescendingOrder);
 		}
 	}
 }

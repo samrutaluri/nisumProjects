@@ -72,9 +72,4 @@ public class Person implements Comparable<Person> {
 	public int compareTo(Person o) {
 		return this.id - o.id;
 	}
-
-	public void mergeSort(int[] array, int i, int j) {
-		
-	}
-
 }

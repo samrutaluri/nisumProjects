@@ -1,28 +1,23 @@
 package com.nisum.sort;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class SelectionSort {
-	public List<Person> SelectionSort(List<Person> persons, boolean isDescendingOrder) {
+	public List<Person> selectionSort(List<Person> persons, boolean isDescendingOrder) {
 		List<Person> distinct = removeDuplicates(persons);
 		return sort(distinct, isDescendingOrder);
 	}
 
 	public List<Person> sort(List<Person> distinctpersonData, boolean isDescendingOrder) {
 
-		if (!isDescendingOrder) {
-			System.out.println("reverse order");
-			List<Person> per = SelectionSort.selectionSortPerson(distinctpersonData);
-			Collections.reverse(per);
-			return per;
-		} else {
-			System.out.println("before selection sorting");
-			return SelectionSort.selectionSortPerson(distinctpersonData);
-		}
+		List<Person> per = SelectionSort.selectionSortPerson(distinctpersonData, isDescendingOrder);
+
+		return SelectionSort.selectionSortPerson(distinctpersonData, isDescendingOrder);
+
 	}
 
 	public List<Person> removeDuplicates(List<Person> persons) {
@@ -39,38 +34,52 @@ public class SelectionSort {
 
 	public List<Person> sort(List<Person> distinct, Comparator<Person> comparator, boolean isDescendingOrder) {
 
+		Predicate<Integer> sortPred = (i) -> i < 0;
+
 		if (isDescendingOrder) {
-			Collections.sort(distinct, new Comparator<Person>() {
-
-				@Override
-				public int compare(Person o1, Person o2) {
-					return o1.firstName.compareTo(o1.firstName);
-
-				}
-
-			});
-
-		} else {
-
-			distinct.sort((o1, o2) -> o2.firstName.compareTo(o1.firstName));
+			sortPred = (i) -> i > 0;
 		}
-		return distinct;
-	}
-
-	protected static List<Person> selectionSortPerson(List<Person> distinct) {
 		Person person;
 		int minIndex;
 		boolean sorted = false;
-		System.out.println(" selectionSortArrayList ");
+
 		while (!sorted) {
 			sorted = true;
 			for (int i = 0; i < distinct.size() - 1; i++) {
 				minIndex = i;
-				if (distinct.get(i).compareTo(distinct.get(i + 1)) > 0) {
+
+				if (sortPred.test(comparator.compare(distinct.get(i), distinct.get(i + 1)))) {
 					minIndex = i + 1;
 					sorted = false;
 				}
-				System.out.println(distinct.get(minIndex).id);
+
+				person = distinct.get(i);
+				distinct.set(i, distinct.get(minIndex));
+				distinct.set(minIndex, person);
+			}
+
+		}
+		return distinct;
+	}
+
+	protected static List<Person> selectionSortPerson(List<Person> distinct, boolean isDescendingOrder) {
+		Person person;
+		int minIndex;
+		boolean sorted = false;
+		Predicate<Integer> sortPred = (i) -> i < 0;
+
+		if (isDescendingOrder) {
+			sortPred = (i) -> i > 0;
+		}
+		while (!sorted) {
+			sorted = true;
+			for (int i = 0; i < distinct.size() - 1; i++) {
+				minIndex = i;
+				if (sortPred.test(distinct.get(i).compareTo(distinct.get(i + 1)))) {
+					minIndex = i + 1;
+					sorted = false;
+				}
+
 				person = distinct.get(i);
 				distinct.set(i, distinct.get(minIndex));
 				distinct.set(minIndex, person);
